@@ -1,0 +1,171 @@
+# 📦QR Code Backup Tool
+
+[![Version](https://img.shields.io/github/release/little-hanabi/qrb)](https://github.com/little-hanabi/qrb/releases)
+[![License](https://img.shields.io/github/license/little-hanabi/qrb)](LICENSE)
+[![CI](https://github.com/little-hanabi/qrb/actions/workflows/release.yml/badge.svg)](https://github.com/little-hanabi/qrb/actions/workflows/release.yml)
+
+> [!IMPORTANT]
+> - This project should be considered a utility toy rather than a professional tool. It lacks comprehensive test cases, professional documentation, standardized error handling, etc.
+> - The developer makes no guarantees—use at your own risk.
+
+This is a command-line tool written in C++ that utilizes QR codes to automate the backup and restoration of arbitrary binary file.
+
+## ✨Features
+
+- Single-file, dependency-free, portable command-line program integrating both encoding and decoding.
+- Automated decoding and parity check recovery; no manual marking or parameter setting required, supports out-of-order recognition.
+- Compact data organization, includes filename and encoding time as metadata.
+- Customizable page QR code layout, QR code version, and QR code error correction level parameters.
+- Customizable parity check redundancy level; entire missing QR blocks can be recovered when redundancy is enabled.
+
+## 📥Installation
+
+| Platform | Installation Method          |
+| :------- | :--------------------------- |
+| Windows  | [Direct Download](https://github.com/little-hanabi/qrb/releases/latest/download/qrb-windows-x64.exe) |
+| Linux    | Refer to [Building](#%EF%B8%8Fbuilding) |
+| Mac OS   | Refer to [Building](#%EF%B8%8Fbuilding) |
+
+## 🚀Usage
+
+### Encode
+
+```
+qrb -e <input_file> <output_dir> <col> <row> <qr_version> <qr_ecc> [<file_ecc>]
+```
+
+- `<input_file>`: The file to be encoded.
+- `<output_dir>`: The directory to save the encoding results. Ensure you have write permissions and the directory is empty or non-existent.
+- `<col>`: Integer greater than 0, specifies the number of QR code columns per page.
+- `<row>`: Integer greater than 0, specifies the number of QR code rows per page.
+- `<qr_version>`: Integer in range `1-40`, corresponds to QR code version `1-40`.
+- `<qr_ecc>`: Integer in range `0-3`, corresponds to QR code error correction level `L-M-Q-H`.
+- `<file_ecc>`: Integer in range `0-6`, specifies the parity check redundancy level. `0` means no parity check. **Higher levels mean lower redundancy.**
+
+> [!NOTE]
+> - Using A4 paper and QR code version 19 as a reference, it's recommended not to exceed 6 columns and 9 rows per page. Denser arrangements might be difficult to recognize.
+> - When the number of QR codes per page exceeds a certain value, the time required for feature matching during decoding increases significantly. Therefore, the number of QR codes per image should not be set too high.
+> - The maximum encodable file size depends on the set QR code version and error correction level, having a dynamic upper limit, but conventional use typically won't reach it.
+> - The maximum filename length that can be encoded is `255` bytes.
+> - You can include additional information like hash values in the filename for external processing.
+
+### Decode
+
+```
+qrb -d <input_dir>  <output_dir> [<ecc_dir>]
+```
+
+- `<input_dir>`: Directory containing the image files with the encoded content. Does not process subdirectories recursively. The auto-built version only supports `PNG`, `JPG`, and `BMP` format images.
+- `<output_dir>`: Directory to save the decoding results. Ensure you have write permissions and the directory is empty or non-existent.
+- `<ecc_dir>`: Directory containing the image files with the parity check content. Does not process subdirectories recursively. The auto-built version only supports `PNG`, `JPG`, and `BMP` format images.
+
+> [!IMPORTANT]
+> - Ensure all QR codes in the images are arranged in a horizontal and vertical grid with equal spacing, without significant rotation or perspective distortion.
+> - Ensure all QR codes in all images within `<input_dir>` and `<ecc_dir>` correspond to the same file, encoded with the same QR code version and error correction level.
+> - Duplicate QR codes are allowed. For example, if a QR code in the original page image is unreadable, you can add a corrected page image to the directory; the program will handle duplicates automatically.
+> - If decoding doesn't complete successfully due to missing blocks, etc., the successfully decoded and parity-recovered content will be saved in `<output_dir>` under the filename `file.bin`.
+
+> [!NOTE]
+> - Use a lens with minimal edge distortion when capturing images.
+> - Ensure even lighting in the images, without overexposure or underexposure.
+> - Ensure QR codes are clear and undamaged.
+> - Ensure QR codes occupy the main area of the image; otherwise, significant time will be wasted repeatedly attempting to decode irrelevant areas.
+> - Ensure the QR code module edge length is at least `2px`. Very small QR codes or very large pixel images might be difficult to recognize.
+> - There is no additional verification for the overall integrity of the file content.
+> - Ensure the terminal character set is `UTF-8`; otherwise, filenames in the metadata might not display correctly, but this usually doesn't affect the saved filenames.
+
+### Error Handling
+
+- If the number of input parameters is incorrect, or an unsupported operation mode is used, help information will be printed.
+- If recoverable errors or exceptions occur, the program will ignore them and continue processing the remainder, without outputting any prompt.
+- If unhandled errors or exceptions occur, the auto-built version typically exits without any output.
+- Failure to follow input/output design requirements when passing parameters and content to process may yield unpredictable results.
+
+## 🛠️Building
+
+### Requirements
+
+- CMake
+- Ninja or another CMake-supported build system
+- A C++ compiler supporting C++20
+- [OpenCV](https://github.com/opencv/opencv/)
+
+> [!TIP]
+> - The MSVC environment on Windows is not thoroughly tested; using the MinGW environment is recommended.
+
+### Steps
+
+1. Download the source code.
+
+```bash
+git clone https://github.com/little-hanabi/qrb.git
+cd qrb
+```
+
+2. (Optional) Modify `CMakeLists.txt` if necessary.
+3. Configure.
+
+```bash
+mkdir build
+cmake -B "./build" -S "." -G "Ninja" -D CMAKE_BUILD_TYPE=Release
+```
+
+> If you need to manually specify the `OpenCV` location, you can run:
+> ```bash
+> cmake -B "./build" -S "." -G "Ninja" -D CMAKE_BUILD_TYPE=Release -D OpenCV_DIR="<your/opencv/path>"
+> ```
+
+4. Build.
+
+```bash
+cmake --build "./build" --config Release
+```
+
+## 🤝Contributing
+
+> [!IMPORTANT]
+> - This project is not designed to be used as a library; therefore, **refactoring into classes will not be accepted**.
+> - The embedded `zxing-cpp` is not for general-purpose recognition; its recognition process has been simplified and modified. Therefore, **directly replacing it with upstream repository will not be accepted**.
+
+### New Features
+
+To maintain the simplicity and purity of this project, the following features will **generally not be added** in principle:
+
+- GUI
+- PDF handling
+- Printer, camera, or scanner integration
+- Compression and decompression
+- Encryption and decryption
+- Multithreading
+- Streaming
+
+### Fixes and Improvements
+
+Issues and pull requests related to improving the stability and performance of this project are welcome.
+
+> [!NOTE]
+> The following items are currently pending resolution:
+> - [ ] Developer resources are limited. Although this project is theoretically cross-platform, this document lacks specific build instructions for Linux and Mac OS platforms, and the `CMakeLists.txt` and automated builds currently do not support producing artifacts for these platforms.
+> - [ ] When multiple QR codes exist in a single page image, current open-source QR code recognition projects (that I could find) often miss some. Therefore, this project uses a somewhat tricky method to automate the decoding of all QR codes in an image. If you have a more elegant, high-performance, and robust solution, suggestions are welcome.
+> - [ ] Regardless of the binarization method used, even without modifying the core algorithm part of `zxing-cpp`, its default recognition rate differs from the original version. Due to the automated solution mentioned in the previous point, this issue has a minor impact on the project's functionality, but identifying the root cause is still desired.
+
+## 🔗Related Projects
+
+- [PaperBack](https://ollydbg.de/Paperbak/)
+- [paperback](https://github.com/cyphar/paperback/)
+- [qr-backup](https://github.com/za3k/qr-backup/)
+- [cimbar](https://github.com/sz3/libcimbar/)
+- [qrs](https://github.com/qifi-dev/qrs/)
+
+## 📜License
+
+[Apache 2.0](LICENSE) © little-hanabi
+
+This project also uses the following open-source projects:
+
+- [OpenCV](https://github.com/opencv/opencv/)
+    - Apache 2.0 License
+    - Used directly, unmodified.
+- [zxing-cpp](https://github.com/zxing-cpp/zxing-cpp/)
+    - Apache 2.0 License
+    - Modified, not compatible with the upstream repository.
