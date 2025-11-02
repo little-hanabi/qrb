@@ -1,0 +1,44 @@
+name: Build and Release
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: write
+
+jobs:
+  build-win-x64:
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: cmd
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      
+    - name: Build
+      env:
+        W64DEVKIT_VERSION: 2.4.0
+        OPENCV_VERSION: 4.12.0
+      run: |
+        curl -L -o w64devkit.exe https://github.com/skeeto/w64devkit/releases/download/v%W64DEVKIT_VERSION%/w64devkit-x64-%W64DEVKIT_VERSION%.7z.exe
+        cmd /c "w64devkit.exe -y"
+        set "PATH=%cd%\w64devkit\bin;%PATH%;"
+        curl -L -o opencv.tar.gz https://github.com/opencv/opencv/archive/refs/tags/%OPENCV_VERSION%.tar.gz
+        mkdir .\3rdparty\opencv\src
+        tar -xf opencv.tar.gz -C ./3rdparty/opencv/src --strip-components=1
+        xcopy /-I /Y ".\3rdparty\opencv\config.txt" ".\build\opencv\CMakeCache.txt"
+        cmake -B "./build/opencv" -S "./3rdparty/opencv/src" -G "Ninja" -D CMAKE_INSTALL_PREFIX="./install/opencv"
+        cmake --build "./build/opencv" --config Release
+        cmake --install "./build/opencv" --config Release
+        cmake -B "./build/qrb" -S "." -G "Ninja" -D CMAKE_BUILD_TYPE=Release -D OpenCV_DIR="./install/opencv"
+        cmake --build "./build/qrb" --config Release
+      
+    - name: Upload
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        rename ".\build\qrb\qrb.exe" "qrb-windows-x64.exe"
+        gh release upload "${{ github.event.release.tag_name }}" "./build/qrb/qrb-windows-x64.exe"
