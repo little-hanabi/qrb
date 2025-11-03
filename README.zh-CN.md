@@ -1,6 +1,6 @@
 # 📦QR Code Backup Tool
 
-[![Version](https://img.shields.io/github/release/little-hanabi/qrb)](https://github.com/little-hanabi/qrb/releases)
+[![Version](https://img.shields.io/github/release/little-hanabi/qrb?include_prereleases)](https://github.com/little-hanabi/qrb/releases)
 [![License](https://img.shields.io/github/license/little-hanabi/qrb)](LICENSE)
 [![CI](https://github.com/little-hanabi/qrb/actions/workflows/release.yml/badge.svg)](https://github.com/little-hanabi/qrb/actions/workflows/release.yml)
 
@@ -22,7 +22,7 @@
 
 | 平台    | 安装方式           |
 | :------ | :---------------- |
-| Windows | [直接下载](https://github.com/little-hanabi/qrb/releases/latest/download/qrb-windows-x64.exe) |
+| Windows | [直接下载](https://github.com/little-hanabi/qrb/releases) |
 | Linux   | 参阅 [构建](#%EF%B8%8F构建) |
 | Mac OS  | 参阅 [构建](#%EF%B8%8F构建) |
 
