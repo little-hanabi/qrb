@@ -141,7 +141,7 @@ namespace qrb::file {
         return {file_size, timestamp, file_name};
     }
 
-    void repair(std::array<std::unordered_map<uint32_t, bool>, 2>& index) {
+    void repair(std::array<std::unordered_map<uint32_t, bool>, 2>& index, const bool has_last) {
         if (index::step() == 1 || index[1].empty()) return;
         std::array buffer{std::valarray<uint8_t>(qr::cap()), std::valarray<uint8_t>(qr::cap())};
 
@@ -163,7 +163,7 @@ namespace qrb::file {
                 for (uint32_t k = s; k - i < index::step() && k <= m; ++k) {
                     stream[0].read(reinterpret_cast<char*>(&buffer[1][0]), len); // 连续读该组每一块，避免重新定位
                     if (k == j) continue;
-                    if (!index[0].contains(k)) { success = false; break; } // 每组损坏超过1块，则无法恢复
+                    if (!index[0].contains(k) || (k == m && !has_last)) { success = false; break; } // 每组损坏超过1块，则无法恢复
                     buffer[0][std::slice(0, stream[0].gcount(), 1)] ^= buffer[1][std::slice(0, stream[0].gcount(), 1)]; //尾块存在序号前缀导致长度不足，故以实际读入字节数为准
                 }
                 if (!success) break;

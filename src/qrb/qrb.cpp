@@ -124,7 +124,7 @@ namespace qrb {
 
         std::cout << "\r" << "100.0% [Decode] [Total: 100.0%]" << std::flush;
 
-        file::repair(index);
+        file::repair(index, last_index.has_value());
 
         std::cout << std::endl << std::endl << "Blocks:  " << index[0].size() << " / ";
         if (last_index.has_value()) std::cout << last_index.value() << std::endl; else std::cout << "?" << std::endl;

@@ -37,6 +37,5 @@ namespace qrb::file {
     std::tuple<uint64_t, uint32_t, fs::path> metadata();
 
     // 奇偶校验修复缺失的数据
-    void repair(std::array<std::unordered_map<uint32_t, bool>, 2>& index);
+    void repair(std::array<std::unordered_map<uint32_t, bool>, 2>& index, bool has_last);
 }
-
