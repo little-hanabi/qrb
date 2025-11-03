@@ -1,6 +1,6 @@
 # 📦QR Code Backup Tool
 
-[![Version](https://img.shields.io/github/release/little-hanabi/qrb)](https://github.com/little-hanabi/qrb/releases)
+[![Version](https://img.shields.io/github/release/little-hanabi/qrb?include_prereleases)](https://github.com/little-hanabi/qrb/releases)
 [![License](https://img.shields.io/github/license/little-hanabi/qrb)](LICENSE)
 [![CI](https://github.com/little-hanabi/qrb/actions/workflows/release.yml/badge.svg)](https://github.com/little-hanabi/qrb/actions/workflows/release.yml)
 
@@ -22,7 +22,7 @@ This is a command-line tool written in C++ that utilizes QR codes to automate th
 
 | Platform | Installation Method          |
 | :------- | :--------------------------- |
-| Windows  | [Direct Download](https://github.com/little-hanabi/qrb/releases/latest/download/qrb-windows-x64.exe) |
+| Windows  | [Direct Download](https://github.com/little-hanabi/qrb/releases) |
 | Linux    | Refer to [Building](#%EF%B8%8Fbuilding) |
 | Mac OS   | Refer to [Building](#%EF%B8%8Fbuilding) |
 
