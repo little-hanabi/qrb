@@ -40,7 +40,7 @@ namespace qrb::index {
     uint32_t encode(uint32_t index, std::span<uint8_t> data, const bool is_ecc) {
         if (is_ecc && ecc_level != 0) {
             index <<= ecc_level;
-            index ^= (index ^ ((1U << (ecc_level - 1)) - 1)) & ((1U << ecc_level) - 1);
+            index ^= (index ^ (1U << (ecc_level - 1))) & ((1U << ecc_level) - 1);
         }
         uint32_t count = 0;
         for (auto& byte : data) {
@@ -62,7 +62,7 @@ namespace qrb::index {
         }
         if (!stop || len(result) != count) return {0, 0};
         if (!is_ecc) return {result, count};
-        for (int i = 1; i <= 6; ++i) if ((result & ((1U << i) - 1)) == ((1U << (i - 1)) - 1)) {
+        for (int i = 1; i <= 6; ++i) if ((result & ((1U << i) - 1)) == (1U << (i - 1))) {
             if (ecc_level != i) {
                 ecc_level = i;
                 ecc_step = 1U << ecc_level;
