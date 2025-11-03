@@ -16,10 +16,10 @@ namespace qrb::file {
     void clean();
 
     // 需处理字节总数或文件总数
-    size_t total();
+    uint64_t total();
 
     // 剩余的字节总数或文件总数
-    size_t remain();
+    uint64_t remain();
 
     // 读指定长度字节到缓冲
     uint64_t read(std::span<uint8_t> data, uint64_t offset, uint64_t length);
@@ -39,3 +39,4 @@ namespace qrb::file {
     // 奇偶校验修复缺失的数据
     void repair(std::array<std::unordered_map<uint32_t, bool>, 2>& index);
 }
+
