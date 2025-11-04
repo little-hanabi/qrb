@@ -29,6 +29,7 @@ namespace qrb {
 
     bool config(const fs::path& input_dir, const fs::path& output_dir, const fs::path& ecc_dir) {
         if (!fs::exists(input_dir, err) || err || !fs::is_directory(input_dir, err) || err) return false;
+        if (!fs::exists(ecc_dir, err) || err || !fs::is_directory(ecc_dir, err) || err) return false;
 
         qr::fresh();
         index::config(0);
