@@ -5,12 +5,11 @@
 [![CI](https://github.com/little-hanabi/qrb/actions/workflows/release.yml/badge.svg)](https://github.com/little-hanabi/qrb/actions/workflows/release.yml)
 
 > [!IMPORTANT]
-> - 此项目应当被视为一个实用玩具而不是一个专业工具，它没有完备的测试用例、专业的文档或规范的错误处理等等。
-> - 开发者不做出任何保证，请自行承担任何使用后果。
+> - 此项目不应当被视为一个专业工具。开发者不做出任何保证，请自行承担任何使用后果。
 
 这是一个使用C++编写的利用二维码来实现自动化备份和恢复单个二进制文件的命令行工具。
 
-## ✨特点
+## 特点
 
 - 编码与解码一体的单文件、无依赖、便携式命令行程序
 - 解码与奇偶校验恢复自动化，无需手动标记或设置参数，并且可以乱序识别
@@ -18,15 +17,13 @@
 - 可自定义页面二维码布局、二维码版本和二维码纠错等级参数
 - 可自定义奇偶校验冗余等级，少量二维码整块缺失时可以恢复
 
-## 📥安装
+## 安装
 
 | 平台    | 安装方式           |
 | :------ | :---------------- |
 | Windows | [直接下载](https://github.com/little-hanabi/qrb/releases) |
-| Linux   | 参阅 [构建](#%EF%B8%8F构建) |
-| Mac OS  | 参阅 [构建](#%EF%B8%8F构建) |
 
-## 🚀使用
+## 使用
 
 ### 编码文件
 
@@ -87,7 +84,7 @@ qrb -d <input_dir> <output_dir> [<ecc_dir>]
 - 当存在未考虑的错误或异常，自动构建的版本通常不输出任何内容，并直接退出
 - 未按输入输出设计要求传递参数和待处理内容，可能会产生不可预测的结果
 
-## 🛠️构建
+## 构建
 
 ### 要求
 
@@ -95,9 +92,6 @@ qrb -d <input_dir> <output_dir> [<ecc_dir>]
 - Ninja或其他CMake支持的构建系统
 - 支持C++ 20的C++编译器
 - [OpenCV](https://github.com/opencv/opencv/)
-
-> [!TIP]
-> - Windows平台MSVC环境未经过充分测试，建议使用MinGW环境编译
 
 ### 步骤
 
@@ -127,35 +121,13 @@ cmake -B "./build" -S "." -G "Ninja" -D CMAKE_BUILD_TYPE=Release
 cmake --build "./build" --config Release
 ```
 
-## 🤝贡献
+## 贡献
 
 > [!IMPORTANT]
-> - 本项目不是为了作为库而设计，因此本项目**不会接受**使用类重构
-> - 内嵌的`zxing-cpp`不是为了通用识别，它的识别流程经过了简化和修改，因此本项目**不会接受**直接使用`zxing-cpp`原仓库
+> - 本项目仍在开发中，且未来将使用`Qt`重构。因此，对于数据格式和`API`不做任何保证。
+> - 本项目暂不接受`PR`
 
-### 新功能
-
-为了保持本项目的简单和纯粹，原则上本项目**不会增加**以下功能：
-
-- GUI
-- PDF
-- 使用打印机、摄像头或扫描仪
-- 压缩与解压缩
-- 加密与解密
-- 多线程
-- 流式传输
-
-### 修复与改进
-
-欢迎提出相关的issue和pr来改进本项目稳定性和性能
-
-> [!NOTE]
-> 目前存在如下事项待解决：
-> - [ ] 开发者精力有限，尽管本项目理论上可以跨平台，但本文缺乏Linux平台和Mac OS平台的具体构建指导，并且`CMakeLists.txt`和自动构建目前不支持构建这些平台的产物
-> - [ ] 当一页图像中存在多个二维码时，目前的开源二维码识别项目（我能找到的）总是会有遗漏。因此，本项目使用了比较取巧的方案来实现自动化解码图像中的全部二维码。如果您有更优雅且高性能、高鲁棒的解决方案，欢迎提出
-> - [ ] 无论使用何种二值化方法，尽管未对`zxing-cpp`算法部分进行修改，其默认情况下的识别率与原版不一致。由于上一条所述自动化方案的存在，该问题对项目功能的影响较小，但仍希望找出原因
-
-## 🔗相关项目
+## 类似项目
 
 - [PaperBack](https://ollydbg.de/Paperbak/)
 - [paperback](https://github.com/cyphar/paperback/)
@@ -163,7 +135,7 @@ cmake --build "./build" --config Release
 - [cimbar](https://github.com/sz3/libcimbar/)
 - [qrs](https://github.com/qifi-dev/qrs/)
 
-## 📜许可
+## 许可
 
 [Apache 2.0](LICENSE) © little-hanabi
 
