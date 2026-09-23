@@ -5,7 +5,8 @@
 [![CI](https://github.com/little-hanabi/qrb/actions/workflows/release.yml/badge.svg)](https://github.com/little-hanabi/qrb/actions/workflows/release.yml)
 
 > [!IMPORTANT]
-> - 此项目不应当被视为一个专业工具。开发者不做出任何保证，请自行承担任何使用后果。
+> - 此项目不应当被视为一个专业工具。
+> - 开发者不做出任何保证，请自行承担任何使用后果。
 
 这是一个使用C++编写的利用二维码来实现自动化备份和恢复单个二进制文件的命令行工具。
 
@@ -124,8 +125,8 @@ cmake --build "./build" --config Release
 ## 贡献
 
 > [!IMPORTANT]
-> - 本项目仍在开发中，且未来将使用`Qt`重构。因此，对于数据格式和`API`不做任何保证。
-> - 本项目暂不接受`PR`
+> - 本项目仍在开发中，且未来将使用`Qt`重构。因此，对于数据格式和 API 不做任何保证。
+> - 本项目暂不接受 PR
 
 ## 类似项目
 

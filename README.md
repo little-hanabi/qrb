@@ -5,7 +5,8 @@
 [![CI](https://github.com/little-hanabi/qrb/actions/workflows/release.yml/badge.svg)](https://github.com/little-hanabi/qrb/actions/workflows/release.yml)
 
 > [!IMPORTANT]
-> - This project should not be considered a professional tool. The developer makes no guarantees—use at your own risk.
+> - This project should not be considered a professional tool.
+> - The developer makes no guarantees—use at your own risk.
 
 This is a command-line tool written in C++ that utilizes QR codes to automate the backup and restoration of single binary file.
 
@@ -124,8 +125,8 @@ cmake --build "./build" --config Release
 ## Contributing
 
 > [!IMPORTANT]
-> - This project is still under development and will be refactored using `Qt` in the future. Therefore, no guarantees are made regarding the data format or the `API`.
-> - This project does not accept `PR`s for the time being.
+> - This project is still under development and will be refactored using `Qt` in the future. Therefore, no guarantees are made regarding the data format or the API.
+> - This project does not accept PRs for the time being.
 
 ## Similar Projects
 
